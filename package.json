@@ -1,0 +1,77 @@
+{
+  "name": "vscode-jupyter-gen-ai",
+  "displayName": "VSCode Jupyter GenAI integration plugin",
+  "description": "Extension designed to use local web server that comes with llama-cpp-python to answer questions and generate code in notebooks",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-jupyter-gen-ai.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "vscode-jupyter-gen-ai.generateInANewCell",
+        "title": "Generate from current cell and feed response to a new cell"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Jupyter GenAI",
+        "properties": {
+          "conf.VSCodeJupyterGenAI.requestUrl": {
+            "description": "OpenAI API compatible request url",
+            "type": "string",
+            "editPresentation": "multilineText",
+            "default": "http://localhost:8000/v1/chat/completions"
+          },
+          "conf.VSCodeJupyterGenAI.requestTemplate": {
+            "description": "OpenAI API request template",
+            "type": "string",
+            "editPresentation": "multilineText",
+            "default": "{\n  \"messages\": [\n    {\n      \"content\": \"You are a helpful assistant, if you asked for a code, you give just a code, without explanation or comments.\",\n      \"role\": \"system\"\n    },\n    {\n      \"content\": \"CELL CONTENT GOES HERE\",\n      \"role\": \"user\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"repeat_penalty\": 1.1,\n  \"stream\": true,\n  \"n\": -1\n}"
+          }
+        }
+      }
+    ]
+  },
+  "keybindings": [
+    {
+      "command": "vscode-jupyter-gen-ai.generateInANewCell",
+      "key": "ctrl+enter",
+      "mac": "cmd+enter"
+    }
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.3",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.84.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "@vscode/test-electron": "^2.3.6",
+    "eslint": "^8.52.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/jquery": "^3.3.29",
+    "jquery": "^3.4.1",
+    "jsdom": "^22.1.0"
+  }
+}
